@@ -384,11 +384,16 @@
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIhsmm0QjkIgl7QQe_zLXYyFsFtFIqtMgYZj3z3_UjxmhuBmTL5WvT1zAjPvT7EWiR/exec';
 
         // Inicializar fecha actual
-        const hoy = new Date();
-        const fechaLocal = hoy.getFullYear() + '-' +
-        String(hoy.getMonth() + 1).padStart(2, '0') + '-' +
-        String(hoy.getDate()).padStart(2, '0');
-        document.getElementById('fecha').value = fechaLocal;
+        document.getElementById("fecha").value = obtenerFechaLocal();
+
+        //Funcion para la fecha 
+        function obtenerFechaLocal() {
+            const hoy = new Date();
+
+            return hoy.getFullYear() + "-" +
+            String(hoy.getMonth() + 1).padStart(2, "0") + "-" +
+            String(hoy.getDate()).padStart(2, "0");
+            }
 
         // Cargar datos desde localStorage
         function cargarDatos() {
@@ -401,8 +406,7 @@
             document.getElementById('conteoNinos').textContent = '0';
             
             // Fecha de hoy
-            const hoy = new Date().toISOString().split('T')[0];
-            document.getElementById('fecha').value = hoy;
+            document.getElementById("fecha").value = obtenerFechaLocal();
             
             actualizarTotal();
         }
