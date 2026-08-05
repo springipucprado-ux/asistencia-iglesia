@@ -388,13 +388,18 @@
 
         // Cargar datos desde localStorage
         function cargarDatos() {
-            const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0,"fecha":""}');
-            document.getElementById('conteoHombres').textContent = datos.hombres;
-            document.getElementById('conteoMujeres').textContent = datos.mujeres;
-            document.getElementById('conteoNinos').textContent = datos.ninos;
-            if (datos.fecha) {
-                document.getElementById('fecha').value = datos.fecha;
-            }
+            // Limpiar localStorage al cargar
+            localStorage.removeItem('asistencia');
+            
+            // Inicializar todo en 0
+            document.getElementById('conteoHombres').textContent = '0';
+            document.getElementById('conteoMujeres').textContent = '0';
+            document.getElementById('conteoNinos').textContent = '0';
+            
+            // Fecha de hoy
+            const hoy = new Date().toISOString().split('T')[0];
+            document.getElementById('fecha').value = hoy;
+            
             actualizarTotal();
         }
 
