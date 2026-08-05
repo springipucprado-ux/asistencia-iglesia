@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Asistencia - Iglesia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .fecha-section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .fecha-section label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .fecha-section input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .fecha-section input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .contador-section {
+            margin-bottom: 40px;
+        }
+
+        .categoria-titulo {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icono {
+            font-size: 24px;
+        }
+
+        .numero-grande {
+            font-size: 56px;
+            font-weight: 700;
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 20px;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .botones-grupo {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .botones-menos {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 14px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-mas {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .btn-mas:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-mas:active {
+            transform: translateY(0);
+        }
+
+        .btn-menos {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .btn-menos:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(245, 87, 108, 0.4);
+        }
+
+        .btn-menos:active {
+            transform: translateY(0);
+        }
+
+        .resumen {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.2);
+        }
+
+        .resumen-titulo {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .resumen-numero {
+            font-size: 48px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .google-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f7ff;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+            margin-bottom: 30px;
+        }
+
+        .google-section h3 {
+            font-size: 14px;
+            color: #2c5282;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .google-section p {
+            font-size: 13px;
+            color: #2c5282;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .google-section input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #bee3f8;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 8px;
+            font-family: monospace;
+        }
+
+        .code-example {
+            background: #e6fffa;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #0d5e60;
+            border-left: 3px solid #1a9b8e;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-family: monospace;
+            word-break: break-all;
+        }
+
+        .acciones {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn-principal {
+            padding: 16px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-guardar {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .btn-guardar:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(72, 187, 120, 0.4);
+        }
+
+        .btn-guardar:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-limpiar {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            color: white;
+        }
+
+        .btn-limpiar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(245, 101, 101, 0.4);
+        }
+
+        .btn-exportar {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: white;
+        }
+
+        .btn-exportar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(66, 153, 225, 0.4);
+        }
+
+        .mensaje {
+            padding: 14px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .mensaje.success {
+            background: #c6f6d5;
+            color: #22543d;
+            border-left: 4px solid #48bb78;
+            display: block;
+        }
+
+        .mensaje.error {
+            background: #fed7d7;
+            color: #742a2a;
+            border-left: 4px solid #f56565;
+            display: block;
+        }
+
+        .mensaje.loading {
+            background: #bee3f8;
+            color: #2c5282;
+            border-left: 4px solid #4299e1;
+            display: block;
+        }
+
+        .info-box {
+            background: #fef5e7;
+            border-left: 4px solid #f39c12;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #7d6608;
+            line-height: 1.5;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #5a4a0a;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #cbd5e0;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .status-indicator.connected {
+            background: #48bb78;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+
+            .numero-grande {
+                font-size: 40px;
+            }
+
+            .categoria-titulo {
+                font-size: 16px;
+            }
+
+            button {
+                font-size: 13px;
+                padding: 12px 8px;
+            }
+
+            .botones-grupo,
+            .botones-menos {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .acciones {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-guardar {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Control de Asistencia</h1>
+
+        <div id="mensaje" class="mensaje"></div>
+
+        <div class="info-box">
+            <strong>⚙️ Configuración:</strong>
+            Para usar esta app, necesitas pegar la URL de tu Google Apps Script en la sección de abajo. <a href="#google-setup" style="color: #7d6608; font-weight: 600;">Ver instrucciones</a>
+        </div>
+
+        <div class="fecha-section">
+            <label for="fecha">📅 Fecha del Servicio</label>
+            <input type="date" id="fecha">
+        </div>
+
+        <div class="resumen">
+            <div class="resumen-titulo">Total de asistentes</div>
+            <div class="resumen-numero" id="totalAsistentes">0</div>
+        </div>
+
+        <!-- Hombres -->
+        <div class="contador-section">
+            <div class="categoria-titulo">
+                <span class="icono">👨</span>
+                Hombres
+            </div>
+            <div class="numero-grande" id="conteoHombres">0</div>
+            <div class="botones-grupo">
+                <button class="btn-mas" onclick="incrementar('hombres', 1)">➕ +1</button>
+                <button class="btn-mas" onclick="incrementar('hombres', 5)">➕ +5</button>
+                <button class="btn-mas" onclick="incrementar('hombres', 10)">➕ +10</button>
+            </div>
+            <div class="botones-menos">
+                <button class="btn-menos" onclick="decrementar('hombres', 1)">➖ -1</button>
+                <button class="btn-menos" onclick="decrementar('hombres', 5)">➖ -5</button>
+                <button class="btn-menos" onclick="decrementar('hombres', 10)">➖ -10</button>
+            </div>
+        </div>
+
+        <!-- Mujeres -->
+        <div class="contador-section">
+            <div class="categoria-titulo">
+                <span class="icono">👩</span>
+                Mujeres
+            </div>
+            <div class="numero-grande" id="conteoMujeres">0</div>
+            <div class="botones-grupo">
+                <button class="btn-mas" onclick="incrementar('mujeres', 1)">➕ +1</button>
+                <button class="btn-mas" onclick="incrementar('mujeres', 5)">➕ +5</button>
+                <button class="btn-mas" onclick="incrementar('mujeres', 10)">➕ +10</button>
+            </div>
+            <div class="botones-menos">
+                <button class="btn-menos" onclick="decrementar('mujeres', 1)">➖ -1</button>
+                <button class="btn-menos" onclick="decrementar('mujeres', 5)">➖ -5</button>
+                <button class="btn-menos" onclick="decrementar('mujeres', 10)">➖ -10</button>
+            </div>
+        </div>
+
+        <!-- Niños -->
+        <div class="contador-section">
+            <div class="categoria-titulo">
+                <span class="icono">👧</span>
+                Niños
+            </div>
+            <div class="numero-grande" id="conteoNinos">0</div>
+            <div class="botones-grupo">
+                <button class="btn-mas" onclick="incrementar('ninos', 1)">➕ +1</button>
+                <button class="btn-mas" onclick="incrementar('ninos', 5)">➕ +5</button>
+                <button class="btn-mas" onclick="incrementar('ninos', 10)">➕ +10</button>
+            </div>
+            <div class="botones-menos">
+                <button class="btn-menos" onclick="decrementar('ninos', 1)">➖ -1</button>
+                <button class="btn-menos" onclick="decrementar('ninos', 5)">➖ -5</button>
+                <button class="btn-menos" onclick="decrementar('ninos', 10)">➖ -10</button>
+            </div>
+        </div>
+
+        <div id="google-setup" class="google-section">
+            <h3>🔗 Configuración de Google Drive</h3>
+            
+            <div style="background: white; padding: 12px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #4299e1;">
+                <p style="margin: 0; font-size: 12px; color: #2d3748;"><strong>Estado de conexión:</strong> <span class="status-indicator" id="statusIndicator"></span><span id="statusText">No configurado</span></p>
+            </div>
+
+            <label style="display: block; font-size: 13px; font-weight: 600; color: #2c5282; margin-bottom: 8px;">URL del Google Apps Script:</label>
+            <input 
+                type="text" 
+                id="scriptUrl" 
+                placeholder="https://script.googleapis.com/macros/s/AKfy..." 
+                style="font-size: 12px; margin-bottom: 10px;"
+            >
+            <p style="font-size: 12px; color: #1a365d; margin-bottom: 15px;">💡 Esta URL la obtienes al publicar el Google Apps Script como Web App</p>
+
+            <details style="margin-bottom: 15px;">
+                <summary style="cursor: pointer; font-weight: 600; color: #2c5282; font-size: 13px; padding: 8px; background: #dbeafe; border-radius: 4px;">📋 Ver instrucciones paso a paso</summary>
+                <div style="background: white; padding: 15px; margin-top: 10px; border-radius: 6px; border-left: 3px solid #4299e1;">
+                    <ol style="font-size: 12px; color: #2c5282; line-height: 1.8; padding-left: 20px;">
+                        <li><strong>Crear Google Sheets:</strong> Ve a <code style="background: #f0f7ff; padding: 2px 6px; border-radius: 3px;">sheets.google.com</code> y crea una nueva hoja de cálculo</li>
+                        <li><strong>Abrir Apps Script:</strong> En Google Sheets, ve a Extensiones → Apps Script</li>
+                        <li><strong>Pegar código:</strong> Borra el código que existe y pega el código del Google Apps Script</li>
+                        <li><strong>Guardar:</strong> Presiona Ctrl+S (o Cmd+S en Mac) para guardar</li>
+                        <li><strong>Publicar:</strong> 
+                            <ul style="margin-top: 5px; padding-left: 20px;">
+                                <li>Haz clic en "Deploy" (arriba a la derecha)</li>
+                                <li>Selecciona "New deployment"</li>
+                                <li>En "Select type", elige "Web app"</li>
+                                <li>Ejecutar como: Tu cuenta de Google</li>
+                                <li>Quién tiene acceso: Cualquiera con el enlace</li>
+                                <li>Haz clic en "Deploy"</li>
+                                <li>Copia la URL de "Deployment ID" (Ejecutable)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Pegar aquí:</strong> Pega esa URL en el campo de arriba y presiona Enter</li>
+                    </ol>
+                </div>
+            </details>
+
+            <button class="btn-principal" onclick="guardarScriptUrl()" style="background: #4299e1; color: white; width: 100%;">✓ Guardar Configuración</button>
+        </div>
+
+        <div class="acciones">
+            <button class="btn-principal btn-limpiar" onclick="limpiar()">🗑️ Limpiar</button>
+            <button class="btn-principal btn-exportar" onclick="exportarCSV()">📥 Descargar CSV</button>
+            <button class="btn-principal btn-guardar" id="btnGuardar" onclick="guardarEnDrive()">💾 Guardar en Drive</button>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar fecha actual
+        const hoy = new Date().toISOString().split('T')[0];
+        document.getElementById('fecha').value = hoy;
+
+        // Cargar configuración de URL
+        function cargarConfiguracion() {
+            const scriptUrl = localStorage.getItem('scriptUrl');
+            if (scriptUrl) {
+                document.getElementById('scriptUrl').value = scriptUrl;
+                actualizarEstadoConexion(true);
+            }
+        }
+
+        // Guardar URL del script
+        function guardarScriptUrl() {
+            const url = document.getElementById('scriptUrl').value.trim();
+            if (!url) {
+                mostrarMensaje('Por favor ingresa una URL válida', 'error');
+                return;
+            }
+            localStorage.setItem('scriptUrl', url);
+            actualizarEstadoConexion(true);
+            mostrarMensaje('✓ Configuración guardada correctamente', 'success');
+        }
+
+        // Actualizar estado de conexión
+        function actualizarEstadoConexion(conectado) {
+            const indicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            const btnGuardar = document.getElementById('btnGuardar');
+            
+            if (conectado) {
+                indicator.classList.add('connected');
+                statusText.textContent = 'Conectado a Google Drive';
+                btnGuardar.disabled = false;
+            } else {
+                indicator.classList.remove('connected');
+                statusText.textContent = 'No configurado';
+                btnGuardar.disabled = true;
+            }
+        }
+
+        // Cargar datos desde localStorage
+        function cargarDatos() {
+            const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0,"fecha":""}');
+            document.getElementById('conteoHombres').textContent = datos.hombres;
+            document.getElementById('conteoMujeres').textContent = datos.mujeres;
+            document.getElementById('conteoNinos').textContent = datos.ninos;
+            if (datos.fecha) {
+                document.getElementById('fecha').value = datos.fecha;
+            }
+            actualizarTotal();
+        }
+
+        // Incrementar contador
+        function incrementar(categoria, cantidad) {
+            const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0}');
+            datos[categoria] = (datos[categoria] || 0) + cantidad;
+            datos.fecha = document.getElementById('fecha').value;
+            localStorage.setItem('asistencia', JSON.stringify(datos));
+            
+            const nombreCapitalizado = categoria.charAt(0).toUpperCase() + categoria.slice(1);
+            document.getElementById('conteo' + nombreCapitalizado).textContent = datos[categoria];
+            actualizarTotal();
+        }
+
+        // Decrementar contador
+        function decrementar(categoria, cantidad) {
+            const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0}');
+            datos[categoria] = Math.max(0, (datos[categoria] || 0) - cantidad);
+            datos.fecha = document.getElementById('fecha').value;
+            localStorage.setItem('asistencia', JSON.stringify(datos));
+            
+            const nombreCapitalizado = categoria.charAt(0).toUpperCase() + categoria.slice(1);
+            document.getElementById('conteo' + nombreCapitalizado).textContent = datos[categoria];
+            actualizarTotal();
+        }
+
+        // Actualizar total
+        function actualizarTotal() {
+            const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0}');
+            const total = datos.hombres + datos.mujeres + datos.ninos;
+            document.getElementById('totalAsistentes').textContent = total;
+        }
+
+        // Mostrar mensajes
+        function mostrarMensaje(texto, tipo) {
+            const mensaje = document.getElementById('mensaje');
+            mensaje.textContent = texto;
+            mensaje.className = 'mensaje ' + tipo;
+            
+            if (tipo === 'success') {
+                setTimeout(() => {
+                    mensaje.className = 'mensaje';
+                }, 4000);
+            }
+        }
+
+        // Guardar en Google Drive
+        async function guardarEnDrive() {
+            const scriptUrl = localStorage.getItem('scriptUrl');
+            
+            if (!scriptUrl) {
+                mostrarMensaje('⚠️ Por favor configura la URL del Google Apps Script primero', 'error');
+                document.getElementById('google-setup').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+
+            const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0}');
+            const fecha = document.getElementById('fecha').value;
+            const total = datos.hombres + datos.mujeres + datos.ninos;
+
+            const btnGuardar = document.getElementById('btnGuardar');
+            btnGuardar.disabled = true;
+            mostrarMensaje('⏳ Guardando en Google Drive...', 'loading');
+
+            try {
+                const response = await fetch(scriptUrl, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        fecha: fecha,
+                        hombres: datos.hombres,
+                        mujeres: datos.mujeres,
+                        ninos: datos.ninos,
+                        total: total
+                    })
+                });
+
+                const resultado = await response.json();
+
+                if (resultado.status === 'success') {
+                    mostrarMensaje('✓ Datos guardados correctamente en Google Drive', 'success');
+                } else {
+                    mostrarMensaje('❌ Error al guardar: ' + resultado.message, 'error');
+                }
+            } catch (error) {
+                mostrarMensaje('❌ Error de conexión. Verifica la URL del script.', 'error');
+                console.error('Error:', error);
+            } finally {
+                btnGuardar.disabled = false;
+            }
+        }
+
+        // Exportar a CSV
+        function exportarCSV() {
+            const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0}');
+            const fecha = document.getElementById('fecha').value;
+            const total = datos.hombres + datos.mujeres + datos.ninos;
+
+            let csv = 'Fecha,Hombres,Mujeres,Niños,Total\n';
+            csv += `${fecha},${datos.hombres},${datos.mujeres},${datos.ninos},${total}`;
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `asistencia_${fecha}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            mostrarMensaje('✓ Archivo descargado', 'success');
+        }
+
+        // Limpiar datos
+        function limpiar() {
+            if (confirm('⚠️ ¿Estás seguro de que deseas limpiar todos los datos? Esta acción no se puede deshacer.')) {
+                localStorage.removeItem('asistencia');
+                document.getElementById('conteoHombres').textContent = '0';
+                document.getElementById('conteoMujeres').textContent = '0';
+                document.getElementById('conteoNinos').textContent = '0';
+                document.getElementById('totalAsistentes').textContent = '0';
+                mostrarMensaje('✓ Datos limpiados', 'success');
+            }
+        }
+
+        // Inicializar
+        cargarConfiguracion();
+        cargarDatos();
+
+        // Actualizar fecha y datos
+        document.getElementById('fecha').addEventListener('change', function() {
+            const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0}');
+            datos.fecha = this.value;
+            localStorage.setItem('asistencia', JSON.stringify(datos));
+        });
+
+        // Enter en el campo de URL
+        document.getElementById('scriptUrl').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                guardarScriptUrl();
+            }
+        });
+    </script>
+</body>
+</html>
