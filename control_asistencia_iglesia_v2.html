@@ -302,8 +302,6 @@
     <div class="container">
         <h1>📊 Control de Asistencia</h1>
 
-        <div id="mensaje" class="mensaje"></div>
-
         <div class="fecha-section">
             <label for="fecha">📅 Fecha del Servicio</label>
             <input type="date" id="fecha">
@@ -374,13 +372,15 @@
         <div class="acciones">
             <button class="btn-principal btn-limpiar" onclick="limpiar()">🗑️ Limpiar</button>
             <button class="btn-principal btn-exportar" onclick="exportarCSV()">📥 Descargar CSV</button>
-            <button class="btn-principal btn-guardar" id="btnGuardar" onclick="guardarEnDrive()">💾 Guardar</button>
+            <button class="btn-principal btn-guardar" id="btnGuardar" onclick="guardarEnDrive()">💾 Guardar en Drive</button>
         </div>
+
+        <div id="mensaje" class="mensaje"></div>
     </div>
 
     <script>
         // URL del Google Apps Script (Hardcodeada)
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIhsmm0QjkIgl7QQe_zLXYyFsFtFIqtMgYZj3z3_UjxmhuBmTL5WvT1zAjPvT7EWiR/exec';
+        const SCRIPT_URL = 'https://script.googleapis.com/macros/s/AKfycbwiNK9mDPBGjBK1JxcO40FzvH5vNLqjKm9my5ueGGGwAghqgGttSJjskpv5dtIO1SCB/exec';
 
         // Inicializar fecha actual
         const hoy = new Date().toISOString().split('T')[0];
