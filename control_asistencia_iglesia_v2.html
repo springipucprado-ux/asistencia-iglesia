@@ -385,9 +385,10 @@
 
         // Inicializar fecha actual
         const hoy = new Date();
-        const offset = hoy.getTimezoneOffset();
-        hoy.setMinutes(hoy.getMinutes() - offset);
-        document.getElementById('fecha').value = hoy.toISOString().split('T')[0];
+        const fechaLocal = hoy.getFullYear() + '-' +
+        String(hoy.getMonth() + 1).padStart(2, '0') + '-' +
+        String(hoy.getDate()).padStart(2, '0');
+        document.getElementById('fecha').value = fechaLocal;
 
         // Cargar datos desde localStorage
         function cargarDatos() {
