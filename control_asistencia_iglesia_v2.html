@@ -384,8 +384,10 @@
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIhsmm0QjkIgl7QQe_zLXYyFsFtFIqtMgYZj3z3_UjxmhuBmTL5WvT1zAjPvT7EWiR/exec';
 
         // Inicializar fecha actual
-        const hoy = new Date().toISOString().split('T')[0];
-        document.getElementById('fecha').value = hoy;
+        const hoy = new Date();
+        const offset = hoy.getTimezoneOffset();
+        hoy.setMinutes(hoy.getMinutes() - offset);
+        document.getElementById('fecha').value = hoy.toISOString().split('T')[0];
 
         // Cargar datos desde localStorage
         function cargarDatos() {
