@@ -425,7 +425,7 @@
 
     <script>
         // URL del Google Apps Script (Hardcodeada)
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxZ6yVFJ3tV8cj33ie-1dqZib_aDsadz6P36HvJCNQrlAUTSviNHNTKt2pHR1VvKbY/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIhsmm0QjkIgl7QQe_zLXYyFsFtFIqtMgYZj3z3_UjxmhuBmTL5WvT1zAjPvT7EWiR/exec';
 
         // Inicializar fecha actual
         document.getElementById("fecha").value = obtenerFechaLocal();
@@ -507,7 +507,8 @@
         async function guardarEnDrive() {
             const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0,"carros":0,"motos":0}');
             const fecha = document.getElementById('fecha').value;
-            const total = datos.hombres + datos.mujeres + datos.ninos;
+            const totalAsistentes = datos.hombres + datos.mujeres + datos.ninos;
+            const totalVehiculos = datos.carros + datos.motos;
 
             const btnGuardar = document.getElementById('btnGuardar');
             btnGuardar.disabled = true;
@@ -521,7 +522,8 @@
                     ninos: datos.ninos,
                     carros: datos.carros,
                     motos: datos.motos,
-                    total: total
+                    totalAsistentes: totalAsistentes,
+                    totalVehiculos: totalVehiculos
                 };
 
                 console.log('Enviando datos:', payload);
@@ -552,10 +554,11 @@
         function exportarCSV() {
             const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0,"carros":0,"motos":0}');
             const fecha = document.getElementById('fecha').value;
-            const total = datos.hombres + datos.mujeres + datos.ninos;
+            const totalAsistentes = datos.hombres + datos.mujeres + datos.ninos;
+            const totalVehiculos = datos.carros + datos.motos;
 
-            let csv = 'Fecha,Hombres,Mujeres,Niños,Carros,Motos,Total\n';
-            csv += `${fecha},${datos.hombres},${datos.mujeres},${datos.ninos},${datos.carros},${datos.motos},${total}`;
+            let csv = 'Fecha,Hombres,Mujeres,Niños,Carros,Motos,Total Asistentes,Total Vehículos\n';
+            csv += `${fecha},${datos.hombres},${datos.mujeres},${datos.ninos},${datos.carros},${datos.motos},${totalAsistentes},${totalVehiculos}`;
 
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
