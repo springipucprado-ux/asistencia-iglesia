@@ -220,15 +220,6 @@
             box-shadow: 0 8px 16px rgba(231, 76, 60, 0.4);
         }
 
-        .btn-exportar {
-            background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
-            color: white;
-        }
-
-        .btn-exportar:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(52, 152, 219, 0.4);
-        }
 
         .mensaje {
             padding: 14px;
@@ -416,7 +407,6 @@
 
         <div class="acciones">
             <button class="btn-principal btn-limpiar" onclick="limpiar()">🗑️ Limpiar</button>
-            <button class="btn-principal btn-exportar" onclick="exportarCSV()">📥 Descargar CSV</button>
             <button class="btn-principal btn-guardar" id="btnGuardar" onclick="guardarEnDrive()">💾 Guardar en Drive</button>
         </div>
 
@@ -425,7 +415,7 @@
 
     <script>
         // URL del Google Apps Script (Hardcodeada)
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwL1gUfhiWevdMfIbM5ofvLNdzYt3A3X0RAJS_QRMVrSK3sm5_jTmCTdXwgrQ53xxOA/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIhsmm0QjkIgl7QQe_zLXYyFsFtFIqtMgYZj3z3_UjxmhuBmTL5WvT1zAjPvT7EWiR/exec';
 
         // Inicializar fecha actual
         document.getElementById("fecha").value = obtenerFechaLocal();
@@ -551,28 +541,6 @@
         }
 
         // Exportar a CSV
-        function exportarCSV() {
-            const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0,"carros":0,"motos":0}');
-            const fecha = document.getElementById('fecha').value;
-            const totalAsistentes = datos.hombres + datos.mujeres + datos.ninos;
-            const totalVehiculos = datos.carros + datos.motos;
-
-            let csv = 'Fecha,Hombres,Mujeres,Niños,Carros,Motos,Total Asistentes,Total Vehículos\n';
-            csv += `${fecha},${datos.hombres},${datos.mujeres},${datos.ninos},${datos.carros},${datos.motos},${totalAsistentes},${totalVehiculos}`;
-
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            
-            link.setAttribute('href', url);
-            link.setAttribute('download', `asistencia_${fecha}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            mostrarMensaje('✓ Archivo descargado', 'success');
-        }
 
         // Limpiar datos
         function limpiar() {
@@ -584,6 +552,7 @@
                 document.getElementById('conteoCarros').textContent = '0';
                 document.getElementById('conteoMotos').textContent = '0';
                 document.getElementById('totalAsistentes').textContent = '0';
+                document.getElementById('totalVehiculos').textContent = '0';
                 mostrarMensaje('✓ Datos limpiados', 'success');
             }
         }
