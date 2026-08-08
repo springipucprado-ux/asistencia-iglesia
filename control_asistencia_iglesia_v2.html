@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Asistencia - Iglesia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a2a3a 0%, #2c3e50 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a2a3a;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .fecha-section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+            width: 100%;
+        }
+
+        .fecha-section label {
+            display: block;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .fecha-section input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .fecha-section input:focus {
+            outline: none;
+            border-color: #2c3e50;
+            box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+        }
+
+        .contador-section {
+            margin-bottom: 40px;
+        }
+
+        .categoria-titulo {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a2a3a;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icono {
+            font-size: 24px;
+        }
+
+        .numero-grande {
+            font-size: 56px;
+            font-weight: 700;
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .botones-grupo {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .botones-menos {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 14px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-mas {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        }
+
+        .btn-mas:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(44, 62, 80, 0.4);
+        }
+
+        .btn-mas:active {
+            transform: translateY(0);
+        }
+
+        .btn-menos {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+        }
+
+        .btn-menos:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-menos:active {
+            transform: translateY(0);
+        }
+
+        .resumen {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(44, 62, 80, 0.2);
+        }
+
+        .resumen-titulo {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .resumen-numero {
+            font-size: 48px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .acciones {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn-principal {
+            padding: 16px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-guardar {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .btn-guardar:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(39, 174, 96, 0.4);
+        }
+
+        .btn-guardar:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-limpiar {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+            color: white;
+        }
+
+        .btn-limpiar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-exportar {
+            background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+            color: white;
+        }
+
+        .btn-exportar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(52, 152, 219, 0.4);
+        }
+
+        .mensaje {
+            padding: 14px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: none;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+
+        .mensaje.success {
+            background: #d5f4e6;
+            color: #0b5345;
+            border-left: 4px solid #27ae60;
+            display: block;
+        }
+
+        .mensaje.error {
+            background: #fadbd8;
+            color: #5b2c2c;
+            border-left: 4px solid #e74c3c;
+            display: block;
+        }
+
+        .mensaje.loading {
+            background: #d6eaf8;
+            color: #1a3a52;
+            border-left: 4px solid #2980b9;
+            display: block;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+
+            .numero-grande {
+                font-size: 40px;
+            }
+
+            .categoria-titulo {
+                font-size: 16px;
+            }
+
+            button {
+                font-size: 13px;
+                padding: 12px 8px;
+            }
+
+            .botones-grupo,
+            .botones-menos {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .acciones {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-guardar {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Control de Asistencia</h1>
+
+        <div class="fecha-section">
+            <label for="fecha">📅 Fecha del Servicio</label>
+            <input type="date" id="fecha">
+        </div>
+
+        <div class="resumen">
+            <div class="resumen-titulo">Total de asistentes</div>
+            <div class="resumen-numero" id="totalAsistentes">0</div>
+        </div>
+
+        <!-- Hombres -->
+        <div class="contador-section">
+            <div class="categoria-titulo">
+                <span class="icono">👨</span>
+                Hombres
+            </div>
+            <div class="numero-grande" id="conteoHombres">0</div>
+            <div class="botones-grupo">
+                <button class="btn-mas" onclick="incrementar('hombres', 1)">➕ +1</button>
+                <button class="btn-mas" onclick="incrementar('hombres', 5)">➕ +5</button>
+                <button class="btn-mas" onclick="incrementar('hombres', 10)">➕ +10</button>
+            </div>
+            <div class="botones-menos">
+                <button class="btn-menos" onclick="decrementar('hombres', 1)">➖ -1</button>
+                <button class="btn-menos" onclick="decrementar('hombres', 5)">➖ -5</button>
+                <button class="btn-menos" onclick="decrementar('hombres', 10)">➖ -10</button>
+            </div>
+        </div>
+
+        <!-- Mujeres -->
+        <div class="contador-section">
+            <div class="categoria-titulo">
+                <span class="icono">👩</span>
+                Mujeres
+            </div>
+            <div class="numero-grande" id="conteoMujeres">0</div>
+            <div class="botones-grupo">
+                <button class="btn-mas" onclick="incrementar('mujeres', 1)">➕ +1</button>
+                <button class="btn-mas" onclick="incrementar('mujeres', 5)">➕ +5</button>
+                <button class="btn-mas" onclick="incrementar('mujeres', 10)">➕ +10</button>
+            </div>
+            <div class="botones-menos">
+                <button class="btn-menos" onclick="decrementar('mujeres', 1)">➖ -1</button>
+                <button class="btn-menos" onclick="decrementar('mujeres', 5)">➖ -5</button>
+                <button class="btn-menos" onclick="decrementar('mujeres', 10)">➖ -10</button>
+            </div>
+        </div>
+
+        <!-- Niños -->
+        <div class="contador-section">
+            <div class="categoria-titulo">
+                <span class="icono">👧</span>
+                Niños
+            </div>
+            <div class="numero-grande" id="conteoNinos">0</div>
+            <div class="botones-grupo">
+                <button class="btn-mas" onclick="incrementar('ninos', 1)">➕ +1</button>
+                <button class="btn-mas" onclick="incrementar('ninos', 5)">➕ +5</button>
+                <button class="btn-mas" onclick="incrementar('ninos', 10)">➕ +10</button>
+            </div>
+            <div class="botones-menos">
+                <button class="btn-menos" onclick="decrementar('ninos', 1)">➖ -1</button>
+                <button class="btn-menos" onclick="decrementar('ninos', 5)">➖ -5</button>
+                <button class="btn-menos" onclick="decrementar('ninos', 10)">➖ -10</button>
+            </div>
+        </div>
+
+        <div class="acciones">
+            <button class="btn-principal btn-limpiar" onclick="limpiar()">🗑️ Limpiar</button>
+            <button class="btn-principal btn-exportar" onclick="exportarCSV()">📥 Descargar CSV</button>
+            <button class="btn-principal btn-guardar" id="btnGuardar" onclick="guardarEnDrive()">💾 Guardar en Drive</button>
+        </div>
+
+        <div id="mensaje" class="mensaje"></div>
+    </div>
+
+    <script>
+        // URL del Google Apps Script (Hardcodeada)
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIhsmm0QjkIgl7QQe_zLXYyFsFtFIqtMgYZj3z3_UjxmhuBmTL5WvT1zAjPvT7EWiR/exec';
+
+        // Inicializar fecha actual
+        document.getElementById("fecha").value = obtenerFechaLocal();
+
+        //Funcion para la fecha 
+        function obtenerFechaLocal() {
+            const hoy = new Date();
+
+            return hoy.getFullYear() + "-" +
+            String(hoy.getMonth() + 1).padStart(2, "0") + "-" +
+            String(hoy.getDate()).padStart(2, "0");
+            }
+
+        // Cargar datos desde localStorage
+        function cargarDatos() {
+            // Limpiar localStorage al cargar
+            localStorage.removeItem('asistencia');
+            
+            // Inicializar todo en 0
+            document.getElementById('conteoHombres').textContent = '0';
+            document.getElementById('conteoMujeres').textContent = '0';
+            document.getElementById('conteoNinos').textContent = '0';
+            
+            // Fecha de hoy
+            document.getElementById("fecha").value = obtenerFechaLocal();
+            
+            actualizarTotal();
+        }
+
+        // Incrementar contador
+        function incrementar(categoria, cantidad) {
+            const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0}');
+            datos[categoria] = (datos[categoria] || 0) + cantidad;
+            datos.fecha = document.getElementById('fecha').value;
+            localStorage.setItem('asistencia', JSON.stringify(datos));
+            
+            const nombreCapitalizado = categoria.charAt(0).toUpperCase() + categoria.slice(1);
+            document.getElementById('conteo' + nombreCapitalizado).textContent = datos[categoria];
+            actualizarTotal();
+        }
+
+        // Decrementar contador
+        function decrementar(categoria, cantidad) {
+            const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0}');
+            datos[categoria] = Math.max(0, (datos[categoria] || 0) - cantidad);
+            datos.fecha = document.getElementById('fecha').value;
+            localStorage.setItem('asistencia', JSON.stringify(datos));
+            
+            const nombreCapitalizado = categoria.charAt(0).toUpperCase() + categoria.slice(1);
+            document.getElementById('conteo' + nombreCapitalizado).textContent = datos[categoria];
+            actualizarTotal();
+        }
+
+        // Actualizar total
+        function actualizarTotal() {
+            const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0}');
+            const total = datos.hombres + datos.mujeres + datos.ninos;
+            document.getElementById('totalAsistentes').textContent = total;
+        }
+
+        // Mostrar mensajes
+        function mostrarMensaje(texto, tipo) {
+            const mensaje = document.getElementById('mensaje');
+            mensaje.textContent = texto;
+            mensaje.className = 'mensaje ' + tipo;
+            
+            if (tipo === 'success') {
+                setTimeout(() => {
+                    mensaje.className = 'mensaje';
+                }, 4000);
+            }
+        }
+
+        // Guardar en Google Drive
+        async function guardarEnDrive() {
+            const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0}');
+            const fecha = document.getElementById('fecha').value;
+            const total = datos.hombres + datos.mujeres + datos.ninos;
+
+            const btnGuardar = document.getElementById('btnGuardar');
+            btnGuardar.disabled = true;
+            mostrarMensaje('⏳ Guardando en Google Drive...', 'loading');
+
+            try {
+                const payload = {
+                    fecha: fecha,
+                    hombres: datos.hombres,
+                    mujeres: datos.mujeres,
+                    ninos: datos.ninos,
+                    total: total
+                };
+
+                console.log('Enviando datos:', payload);
+
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                // Con mode: 'no-cors', la respuesta es opaca
+                // Consideramos que fue exitosa si no hay error
+                mostrarMensaje('✓ Datos guardados correctamente en Google Drive', 'success');
+                console.log('Datos enviados exitosamente');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarMensaje('❌ Error de conexión. Intenta de nuevo.', 'error');
+            } finally {
+                btnGuardar.disabled = false;
+            }
+        }
+
+        // Exportar a CSV
+        function exportarCSV() {
+            const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0}');
+            const fecha = document.getElementById('fecha').value;
+            const total = datos.hombres + datos.mujeres + datos.ninos;
+
+            let csv = 'Fecha,Hombres,Mujeres,Niños,Total\n';
+            csv += `${fecha},${datos.hombres},${datos.mujeres},${datos.ninos},${total}`;
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `asistencia_${fecha}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            mostrarMensaje('✓ Archivo descargado', 'success');
+        }
+
+        // Limpiar datos
+        function limpiar() {
+            if (confirm('⚠️ ¿Estás seguro de que deseas limpiar todos los datos? Esta acción no se puede deshacer.')) {
+                localStorage.removeItem('asistencia');
+                document.getElementById('conteoHombres').textContent = '0';
+                document.getElementById('conteoMujeres').textContent = '0';
+                document.getElementById('conteoNinos').textContent = '0';
+                document.getElementById('totalAsistentes').textContent = '0';
+                mostrarMensaje('✓ Datos limpiados', 'success');
+            }
+        }
+
+        // Inicializar
+        cargarDatos();
+
+        // Actualizar fecha y datos
+        document.getElementById('fecha').addEventListener('change', function() {
+            const datos = JSON.parse(localStorage.getItem('asistencia') || '{"hombres":0,"mujeres":0,"ninos":0}');
+            datos.fecha = this.value;
+            localStorage.setItem('asistencia', JSON.stringify(datos));
+        });
+    </script>
+</body>
+</html>
